@@ -2,21 +2,31 @@ require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+
 const authRoutes = require('./routes/auth');
 const userRoutes = require('./routes/users');
+const notesRoutes = require("./routes/notes");
+const aiRoutes = require("./routes/ai");
+const classRoutes = require("./routes/ClassRoutes");
 const app = express();
+const PORT = 5000;
 
 app.use(cors());
 app.use(express.json());
 
 // Test route first
-app.get('/', (req, res) => {
-  res.send('API running');
-});
+// app.get('/', (req, res) => {
+//   res.send('API running');
+// });
+
+app.use("/uploads", express.static("uploads"));
 
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
+app.use("/api/notes", notesRoutes);
 app.use('/api/users', require('./routes/users'));
+app.use("/api/ai", aiRoutes);
+app.use("/api/classes", classRoutes);
 
 mongoose.connect(process.env.MONGO_URI)
   .then(() => {
